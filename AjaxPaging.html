@@ -1,0 +1,93 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>index</title>
+    <meta charset="utf-8">
+    <meta name="Author" content="海牙">
+    <link rel="stylesheet" href="css/AjaxPaging.css">
+</head>
+<body>
+<div class="wrap flex_column">
+    <div class="content flex_column" id="vv">
+       <!--
+           
+        http://route.showapi.com/181-1 
+        账号:showapi_appid:'30603'
+        密码:showapi_sign:'98960666afeb4992ae91971d13494090'
+        请求页page:page
+        请求页数num:8
+        http://route.showapi.com/181-1
+        ?showapi_appid=30603
+        &showapi_sign=98960666afeb4992ae91971d13494090
+        &page=0
+        &num=8
+
+           <a href="http://mp.weixin.qq.com/s/hSI0RNGR23KetTFLoYP7dQ" class="items flex_row">
+            <div class="img"><img src="http://www.tanzhouphp.com/tanzhoue/images/newsList/1.jpg" alt=""></div>
+            <div class="bd">
+                <p class="label">说来也是惨，古生物学家好像特别容易被假化石坑到呢……</p>
+            </div>
+            <div class="ft">&GT;</div>
+        </a>-->
+    </div>
+    <div class="page">
+        <ul class="flex_row">
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+            <li>6</li>
+        </ul>
+    </div>
+</div>
+<script>
+    /*
+      获得数据
+      整理数据
+    */
+    function getdata(){
+    var url = "http://route.showapi.com/181-1";//地址
+    var xmlHttp;
+    if(window.XMLHttpRequest){
+        xmlHttp = new XMLHttpRequest;
+    }else {
+        xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlHttp.open('GET',url+'?'+'showapi_appid=30603&showapi_sign=98960666afeb4992ae91971d13494090&page=0&num=8',true);
+    xmlHttp.send(null);
+    xmlHttp.onreadystatechange = function(){
+        if(xmlHttp.readyState === 4 && xmlHttp.status === 200){
+            //console.log(JSON.parse(xmlHttp.response));
+            //格式化数据
+            var dataPost = JSON.parse(xmlHttp.response).showapi_res_body.newslist;
+            //console.log(dataPost);
+            rander(dataPost);
+        }
+    }
+    }
+    /*
+      渲染数据
+    */
+    //var oCon = document.querySelector('.content');
+    var oCon = document.getElementById ('vv');
+    console.log(oCon);
+    function rander(dataList) {
+        //console.log(dataList);
+        var str = '';//初始化文本域
+        for(var i=0,len=dataList.length;i<len;i++){
+            str += 
+            `<a href="${dataList[i].url}" class="items flex_row">
+                <div class="img"><img src="${dataList[i].picUrl}" alt=""></div>
+                    <div class="bd">
+                        <p class="label">${dataList[i].title}</p>
+                    </div>
+                <div class="ft">&GT;</div>
+            </a>` 
+        }
+        oCon.innerHTML = str;
+    }
+getdata();
+</script>
+</body>
+</html>
